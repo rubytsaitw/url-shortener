@@ -2,39 +2,13 @@ const express = require('express')
 const router = express.Router()
 
 const Url = require('../../models/url')
+const generateShortUrl = require('../../tools/helpers')
+
 
 // Get home page
 router.get('/', (req, res) => {
   res.render('index')
 })
-
-// define sample function to randomly select an item from an array
-function sample(array) {
-  const i = Math.floor(Math.random() * array.length)
-  return array[i]
-}
-
-// define generateShortUrl function
-function generateShortUrl() {
-  // define components for Url
-  const lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz'
-  const upperCaseLetters = lowerCaseLetters.toUpperCase()
-  const numbers = '1234567890'
-
-  // create a collection to put in all items
-  let collectionItems = lowerCaseLetters + upperCaseLetters + numbers
-  let collection = []
-  collection = collectionItems.split('')
-
-  let shortUrl = ''
-  // generate random shortUrl
-  for (i = 1; i <= 5; i++) {
-    shortUrl += sample(collection)
-  }
-
-  // return shortUrl
-  return shortUrl
-}
 
 // Create new short URL
 router.post('/', (req, res) => {
