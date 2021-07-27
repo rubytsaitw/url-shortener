@@ -16,18 +16,21 @@ router.post('/', (req, res) => {
   Url.find({ inputUrl: inputUrl })
     .lean()
     .then(url => {
-      // if url != 0 -> render
+      // if url != 0 -> return existing database and render
       if (url.length !== 0) {
-        res.render('short', { shortUrl: url[0].shortUrl })
+        return url[0]
       }
-      // else return {inputURL, shortURL}
-      else return {
-        inputUrl: inputUrl,
-        shortUrl: generateShortUrl()
+      // else return {inputURL, new shortURL} -> create into database
+      else {
+        let url = {
+          inputUrl: inputUrl,
+          shortUrl: generateShortUrl()
+        }
+        Url.create(url)
+        return url
       }
     })
     .then(url => {
-      Url.create(url)
       res.render('short', { shortUrl: url.shortUrl })
     })
     .catch(error => console.log(error))
