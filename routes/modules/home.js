@@ -10,29 +10,26 @@ router.get('/', (req, res) => {
   res.render('index')
 })
 
-// Create new short URL
-router.post('/', (req, res) => {
-  const { inputUrl } = req.body
-  Url.find({ inputUrl: inputUrl })
-    .lean()
-    .then(url => {
-      // if url != 0 -> return existing database and render
-      if (url.length !== 0) {
-        return url[0]
-      }
-      // else return {inputURL, new shortURL} -> create into database
-      else {
-        let url = {
-          inputUrl: inputUrl,
-          shortUrl: generateShortUrl()
-        }
-        Url.create(url)
-        return url
-      }
-    })
-    .then(url => {
-      res.render('short', { shortUrl: url.shortUrl })
-    })
+// Create short URL
+router.post('/', async (req, res) => {
+  // check if url exists
+  const inputUrl = req.body.inputUrl.trim()
+  const url = await Url.find({ inputUrl }).lean()
+  if (url.length !== 0) {
+    return res.render('short', { shortUrl: url[0].shortUrl })
+  }
+  // if not, generate unique short url
+  const shortUrlArr = await Url.find().distinct('shortUrl').lean()
+  let tempUrl = ''
+  do {
+    tempUrl = generateShortUrl()
+  } while (shortUrlArr.includes(tempUrl))
+
+  return Url.create({
+    inputUrl: inputUrl,
+    shortUrl: tempUrl
+  })
+    .then(() => res.render('short', { shortUrl: tempUrl }))
     .catch(error => console.log(error))
 })
 
