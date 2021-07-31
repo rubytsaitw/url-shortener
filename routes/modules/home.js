@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const projectUrl = "https://very-very-short-url.herokuapp.com/"
 
 const Url = require('../../models/url')
 const generateShortUrl = require('../../tools/helpers')
@@ -13,6 +12,7 @@ router.get('/', (req, res) => {
 
 // Create short URL
 router.post('/', async (req, res) => {
+  const projectUrl = req.protocol + '://' + req.get('host') + '/'
   // check if url exists
   const inputUrl = req.body.inputUrl.trim()
   const url = await Url.find({ inputUrl }).lean()
@@ -37,8 +37,6 @@ router.post('/', async (req, res) => {
 // link to original url
 // not resolved
 router.get('/:id', (req, res) => {
-  console.log(req.body)
-  console.log(req.params)
   Url.find({ shortUrl: req.params.id })
     .lean()
     .then(url => {
@@ -48,3 +46,6 @@ router.get('/:id', (req, res) => {
 })
 
 module.exports = router
+
+// Ref: Get full Url in Express
+// https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
