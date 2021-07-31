@@ -7,11 +7,11 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true 
 const db = mongoose.connection
 
 db.on('error', () => {
-  console.log('mongodb error,', MONGODB_URI)
+  console.log('mongodb error')
 }).catch(error => console.log(error))
 
 db.once('open', () => {
-  console.log('mongodb connected', MONGODB_URI)
-})
+  console.log('mongodb connected')
+}).catch(error => console.log(error))
 
 module.exports = db
