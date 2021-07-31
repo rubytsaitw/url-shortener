@@ -1,3 +1,11 @@
+// validate url
+function urlInputValidation(url) {
+  const regex = /^(ftp|http|https):\/\/[^ "]+$/
+  return regex.test(url)
+}
+// Ref: Get full Url in Express
+// https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
+
 // define sample function to randomly select an item from an array
 function sample(array) {
   const i = Math.floor(Math.random() * array.length)
@@ -26,4 +34,4 @@ function generateShortUrl() {
   return shortUrl
 }
 
-module.exports = generateShortUrl
+module.exports = { generateShortUrl, urlInputValidation }

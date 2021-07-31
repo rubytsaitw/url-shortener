@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Url = require('../../models/url')
-const generateShortUrl = require('../../tools/helpers')
+const { urlInputValidation, generateShortUrl } = require('../../tools/helpers')
 
 
 // Get home page
@@ -12,9 +12,15 @@ router.get('/', (req, res) => {
 
 // Create short URL
 router.post('/', async (req, res) => {
+  // check if input url is valid
+  const inputUrl = req.body.inputUrl.trim()
+  const notValidUrl = !urlInputValidation(inputUrl)
+  if (notValidUrl) {
+    return res.render('index', { notValidUrl, inputUrl })
+  }
+
   const projectUrl = req.protocol + '://' + req.get('host') + '/'
   // check if url exists
-  const inputUrl = req.body.inputUrl.trim()
   const url = await Url.find({ inputUrl }).lean()
   if (url.length !== 0) {
     return res.render('short', { projectUrl, shortUrl: url[0].shortUrl })
@@ -35,7 +41,6 @@ router.post('/', async (req, res) => {
 })
 
 // link to original url
-// not resolved
 router.get('/:id', (req, res) => {
   Url.find({ shortUrl: req.params.id })
     .lean()
@@ -46,6 +51,3 @@ router.get('/:id', (req, res) => {
 })
 
 module.exports = router
-
-// Ref: Get full Url in Express
-// https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
