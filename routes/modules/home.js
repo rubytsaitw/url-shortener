@@ -21,12 +21,12 @@ router.post('/', async (req, res) => {
 
   const projectUrl = req.protocol + '://' + req.get('host') + '/'
   // check if url exists
-  const url = await Url.find({ inputUrl }).lean()
+  const url = await Url.find({ inputUrl }).lean().catch(error => console.log(error))
   if (url.length !== 0) {
     return res.render('short', { projectUrl, shortUrl: url[0].shortUrl })
   }
   // if not, generate unique short url
-  const shortUrlArr = await Url.find().distinct('shortUrl').lean()
+  const shortUrlArr = await Url.find().distinct('shortUrl').lean().catch(error => console.log(error))
   let tempUrl = ''
   do {
     tempUrl = generateShortUrl()
@@ -47,7 +47,7 @@ router.get('/:id', (req, res) => {
     .then(url => {
       res.redirect(url[0].inputUrl)
     })
-    .catch(err => console.error(err))
+    .catch(error => console.log(error))
 })
 
 module.exports = router
