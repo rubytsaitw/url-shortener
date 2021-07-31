@@ -1,10 +1,9 @@
-// validate url
+// check url validation
 function urlInputValidation(url) {
   const regex = /^(ftp|http|https):\/\/[^ "]+$/
   return regex.test(url)
 }
-// Ref: Get full Url in Express
-// https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
+// Ref: https://stackoverflow.com/questions/1410311/regular-expression-for-url-validation-in-javascript
 
 // define sample function to randomly select an item from an array
 function sample(array) {

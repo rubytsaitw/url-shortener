@@ -1,7 +1,7 @@
 {{!-- copy to clipboard --}}
 <div class="input-panel">
   <h2>Success! Please use this link:</h2>
-  <input type="text" id="short-url" style="boarder:0;outline:0;" value="{{ projectUrl }}{{ shortUrl }}" />
+  <input type="hidden" id="short-url" value="{{ projectUrl }}{{ shortUrl }}" />
   <br>
   <a href={{ projectUrl }}{{ shortUrl }}>{{ projectUrl }}{{ shortUrl }}</a>
   <div class="button">
