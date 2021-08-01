@@ -18,7 +18,7 @@ URL Shortener made by Node.js and Express.js.  Can run via local or cloud server
 
 ## 專案畫面 - Project Image
 
-![image](https://github.com/rubytsaitw/restaurant-list/blob/main/public/img/A12_短網址產生器.png)
+![image](https://github.com/rubytsaitw/restaurant-list/blob/main/public/img/A12_url-shortener.png)
 
 ## 環境建置 - Environment SetUp
 
